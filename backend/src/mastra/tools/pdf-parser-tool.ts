@@ -1,10 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 import * as fs from 'fs';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
-const { PDFParse } = require('pdf-parse');
+import { PDFParse } from 'pdf-parse';
 
 
 export const pdfParserTool = createTool({
