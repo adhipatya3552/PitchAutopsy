@@ -82,7 +82,7 @@ export default function HomePage() {
       </div>
 
       {/* ═══════════════  NAV  ═══════════════ */}
-      <nav className="relative z-20 flex items-center justify-between px-8 lg:px-16 py-6">
+      <nav className="relative z-20 max-w-6xl mx-auto flex items-center justify-between px-6 lg:px-12 py-8">
         <motion.div initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
             style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)" }}>🔬</div>
@@ -112,7 +112,7 @@ export default function HomePage() {
       </nav>
 
       {/* ═══════════════  HERO  ═══════════════ */}
-      <section className="relative z-10 flex flex-col items-center text-center px-6 pt-20 lg:pt-28 pb-8">
+      <section className="relative z-10 flex flex-col items-center text-center px-6 pt-28 lg:pt-40 pb-24 lg:pb-36">
         {/* Badge */}
         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.5 }}
           className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full text-xs font-space tracking-wide mb-12"
@@ -184,7 +184,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════  STATS  ═══════════════ */}
-      <section className="relative z-10 px-6 py-20 lg:py-28">
+      <section className="relative z-10 px-6 py-28 lg:py-40">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-5">
           {stats.map((s, i) => (
             <motion.div key={i} variants={sectionReveal} initial="hidden" whileInView="visible"
@@ -202,7 +202,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════  REPORT PREVIEW  ═══════════════ */}
-      <section id="preview" className="relative z-10 px-6 py-20 lg:py-28">
+      <section id="preview" className="relative z-10 px-6 py-32 lg:py-48">
         <div className="max-w-4xl mx-auto">
           <motion.div variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true }}
             className="text-center mb-16">
@@ -313,12 +313,12 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════  DIVIDER  ═══════════════ */}
-      <div className="relative z-10 max-w-3xl mx-auto px-6">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-12">
         <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.12), transparent)" }} />
       </div>
 
       {/* ═══════════════  HOW IT WORKS  ═══════════════ */}
-      <section id="how-it-works" className="relative z-10 px-6 py-24 lg:py-32">
+      <section id="how-it-works" className="relative z-10 px-6 py-36 lg:py-52">
         <div className="max-w-5xl mx-auto">
           <motion.div variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true }}
             className="text-center mb-16">
@@ -357,7 +357,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════  TRUST  ═══════════════ */}
-      <section className="relative z-10 px-6 py-16 lg:py-20">
+      <section className="relative z-10 px-6 py-24 lg:py-32">
         <motion.div variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true }}
           className="max-w-3xl mx-auto">
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm font-space" style={{ color: "rgba(226,232,240,0.3)" }}>
@@ -377,12 +377,12 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════  DIVIDER  ═══════════════ */}
-      <div className="relative z-10 max-w-3xl mx-auto px-6">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-12">
         <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)" }} />
       </div>
 
       {/* ═══════════════  FAQ  ═══════════════ */}
-      <section id="faq" className="relative z-10 px-6 py-24 lg:py-32">
+      <section id="faq" className="relative z-10 px-6 py-36 lg:py-52">
         <div className="max-w-2xl mx-auto">
           <motion.div variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true }}
             className="text-center mb-14">
@@ -429,7 +429,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════  CTA  ═══════════════ */}
-      <section className="relative z-10 px-6 py-24 lg:py-32">
+      <section className="relative z-10 px-6 py-36 lg:py-52">
         <motion.div variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true }}
           className="max-w-2xl mx-auto text-center">
           <h2 className="font-space font-bold text-3xl lg:text-4xl mb-5" style={{ color: "#e2e8f0", letterSpacing: "-0.02em" }}>
@@ -452,7 +452,7 @@ export default function HomePage() {
       </section>
 
       {/* ═══════════════  FOOTER  ═══════════════ */}
-      <footer className="relative z-10 px-6 pt-4 pb-12">
+      <footer className="relative z-10 px-6 pt-12 pb-20">
         <div className="max-w-5xl mx-auto">
           <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)", marginBottom: "2.5rem" }} />
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
