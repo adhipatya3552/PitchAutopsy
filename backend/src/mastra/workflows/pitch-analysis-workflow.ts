@@ -1,5 +1,9 @@
 import { createStep, createWorkflow } from '@mastra/core/workflows';
 import { z } from 'zod';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
+import { tmpdir } from 'os';
+import { randomUUID } from 'crypto';
 import { pdfParserTool } from '../tools/pdf-parser-tool';
 import { checkSafetyWithEnkrypt } from '../public/enkrypt';
 
@@ -70,24 +74,40 @@ ${basePrompt}
 }
 
 // Step 1: Parse PDF
+// Accepts either a local path (same-machine dev) or base64 bytes (Vercel → Render).
 const parsePdfStep = createStep({
   id: 'parse-pdf-step',
   description: 'Extracts raw text from the pitch deck PDF file',
   inputSchema: z.object({
-    pdfPath: z.string(),
+    pdfPath: z.string().optional(),
+    pdfBase64: z.string().optional(),
+    fileName: z.string().optional(),
   }),
   outputSchema: z.object({
     extractedText: z.string(),
   }),
   execute: async ({ inputData }) => {
-    if (!inputData?.pdfPath) {
-      throw new Error('PDF path not provided');
+    let pdfPath = inputData?.pdfPath;
+
+    // Remote deploy: frontend sends base64; write onto THIS server's disk
+    if (inputData?.pdfBase64) {
+      const uploadDir = join(tmpdir(), 'pitchautopsy');
+      await mkdir(uploadDir, { recursive: true });
+      const safeName = (inputData.fileName || 'deck.pdf').replace(/[^\w.\-]+/g, '_');
+      pdfPath = join(uploadDir, `${randomUUID()}-${safeName}`);
+      await writeFile(pdfPath, Buffer.from(inputData.pdfBase64, 'base64'));
+      console.log(`[Workflow Step] Wrote uploaded PDF to ${pdfPath}`);
     }
-    console.log(`[Workflow Step] Parsing PDF at: ${inputData.pdfPath}`);
+
+    if (!pdfPath) {
+      throw new Error('PDF not provided (need pdfBase64 or pdfPath)');
+    }
+
+    console.log(`[Workflow Step] Parsing PDF at: ${pdfPath}`);
     if (!pdfParserTool.execute) {
       throw new Error('pdfParserTool.execute is undefined');
     }
-    const result = await pdfParserTool.execute({ pdfPath: inputData.pdfPath }, {} as any) as { text: string };
+    const result = await pdfParserTool.execute({ pdfPath }, {} as any) as { text: string };
     console.log(`[Workflow Step] Extracted ${result.text.length} characters.`);
     return {
       extractedText: result.text,
@@ -263,7 +283,10 @@ Cover the main slides of the deck (up to 10). No markdown. No separate Narrative
 export const pitchAnalysisWorkflow = createWorkflow({
   id: 'pitch-analysis-workflow',
   inputSchema: z.object({
-    pdfPath: z.string(),
+    // Local path (same-machine) OR base64 for split deploy (Vercel + Render)
+    pdfPath: z.string().optional(),
+    pdfBase64: z.string().optional(),
+    fileName: z.string().optional(),
   }),
   outputSchema: z.object({
     extractedText: z.string(),

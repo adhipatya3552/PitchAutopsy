@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
-import { tmpdir } from "os";
 import { randomUUID } from "crypto";
 
 const MASTRA_BASE = process.env.MASTRA_URL || "http://localhost:4111";
 const WORKFLOW_ID = "pitch-analysis-workflow";
 
+/** Vercel and Render do not share a filesystem. Always send the PDF bytes
+ *  to Mastra as base64 so the backend can write+parse on its own disk. */
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -16,16 +15,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Persist PDF to a temp path the Mastra workflow can read
-    const fileId = randomUUID();
-    const uploadDir = join(tmpdir(), "pitchautopsy");
-    await mkdir(uploadDir, { recursive: true });
-    const filePath = join(uploadDir, `${fileId}.pdf`);
-    const bytes = await file.arrayBuffer();
-    await writeFile(filePath, Buffer.from(bytes));
+    // Soft size guard (Vercel serverless body limits ~4.5MB on hobby)
+    const maxBytes = 4 * 1024 * 1024;
+    if (file.size > maxBytes) {
+      return NextResponse.json(
+        {
+          error:
+            "PDF is too large for upload on this host (max ~4MB). Use a smaller deck.",
+        },
+        { status: 413 }
+      );
+    }
 
-    // 1) Create a run — Mastra returns the canonical runId
-    //    create-run body only accepts resourceId / disableScorers (not inputData)
+    const bytes = await file.arrayBuffer();
+    const pdfBase64 = Buffer.from(bytes).toString("base64");
+    const fileName = file.name || `${randomUUID()}.pdf`;
+
+    // 1) Create a run
     const createRes = await fetch(
       `${MASTRA_BASE}/api/workflows/${WORKFLOW_ID}/create-run`,
       {
@@ -53,23 +59,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 2) Start THAT same run. runId must be a query param (body runId is ignored).
-    //    Prefer /start (fire-and-forget) over /start-async (awaits full completion).
+    // 2) Start with PDF payload (base64), not a Vercel-local path
     const startUrl = `${MASTRA_BASE}/api/workflows/${WORKFLOW_ID}/start?runId=${encodeURIComponent(runId)}`;
-    console.log(`[analyze] Starting workflow run ${runId} via ${startUrl}`);
+    console.log(
+      `[analyze] Starting workflow run ${runId} (${fileName}, ${file.size} bytes)`
+    );
 
-    fetch(startUrl, {
+    // Await start acknowledgement so cold-start failures surface (short)
+    // Mastra /start returns immediately without waiting for full workflow.
+    const startRes = await fetch(startUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        inputData: { pdfPath: filePath },
+        inputData: {
+          pdfBase64,
+          fileName,
+        },
       }),
-    }).catch((err) => {
-      console.error("Background trigger error:", err);
     });
 
-    // Return the same runId the frontend will use for /analyze and SSE
-    return NextResponse.json({ runId, filePath });
+    if (!startRes.ok) {
+      const errText = await startRes.text();
+      return NextResponse.json(
+        { error: `Failed to start analysis: ${errText}` },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({ runId, fileName });
   } catch (error) {
     console.error("Analyze API error:", error);
     return NextResponse.json(
