@@ -4,15 +4,17 @@
    DESIGN TOKENS
    ============================================ */
 :root {
-  /* Editorial palette (landing page) */
-  --void: #0B0D11;
-  --parchment: #F0EDE6;
+  /* Core palette — forensic lightbox */
+  --void: #0A0C10;
+  --surface: #12151B;
+  --parchment: #E8E4DC;
   --redline: #E23E57;
-  --graphite: #6B7280;
-  --slate-surface: #1A1D24;
+  --ash: #6B7280;
+  --evidence: #D4A843;
   --remedy: #34D399;
+  --cyan-muted: #5BB8D4;
 
-  /* System tokens (report, analyze, history pages) */
+  /* Legacy system tokens (report, analyze, history pages) */
   --bg-void: #050810;
   --bg-surface: #0a0e1a;
   --bg-card: rgba(255, 255, 255, 0.03);
@@ -28,6 +30,9 @@
   --red-dim: rgba(255, 51, 102, 0.15);
   --glass: rgba(255, 255, 255, 0.04);
   --glass-border: rgba(255, 255, 255, 0.08);
+
+  /* Shared font references */
+  --graphite: #6B7280;
   --font-space: var(--font-space);
   --font-inter: var(--font-inter);
 }
@@ -46,7 +51,7 @@ html {
 }
 
 body {
-  background-color: var(--bg-void);
+  background-color: var(--void);
   color: #e2e8f0;
   font-family: var(--font-inter), system-ui, sans-serif;
   overflow-x: hidden;
@@ -58,6 +63,10 @@ body {
    ============================================ */
 .font-space {
   font-family: var(--font-space), system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
 }
 
 .gradient-text {
@@ -76,10 +85,6 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: text-shimmer 4s linear infinite;
-}
-
-.font-display {
-  font-family: var(--font-display), Georgia, "Times New Roman", serif;
 }
 
 /* ============================================
@@ -248,7 +253,7 @@ body {
 .upload-zone-premium {
   position: relative;
   border-radius: 24px;
-  padding: 3rem 2rem;
+  padding: 3.5rem 2.5rem;
   text-align: center;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.02);
@@ -263,7 +268,7 @@ body {
   border-radius: inherit;
   background: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(0, 212, 255, 0.04),
+    rgba(226, 62, 87, 0.04),
     transparent 40%
   );
   pointer-events: none;
@@ -274,16 +279,16 @@ body {
   opacity: 1;
 }
 .upload-zone-premium:hover {
-  border-color: rgba(0, 212, 255, 0.2);
-  box-shadow: 0 0 60px rgba(0, 212, 255, 0.08), 0 0 120px rgba(139, 92, 246, 0.04);
+  border-color: rgba(226, 62, 87, 0.2);
+  box-shadow: 0 0 60px rgba(226, 62, 87, 0.06), 0 0 120px rgba(226, 62, 87, 0.03);
 }
 .upload-zone-premium.drag-active {
-  border-color: rgba(0, 212, 255, 0.4);
-  background: rgba(0, 212, 255, 0.04);
-  box-shadow: 0 0 80px rgba(0, 212, 255, 0.15), inset 0 0 40px rgba(0, 212, 255, 0.03);
+  border-color: rgba(226, 62, 87, 0.4);
+  background: rgba(226, 62, 87, 0.04);
+  box-shadow: 0 0 80px rgba(226, 62, 87, 0.12), inset 0 0 40px rgba(226, 62, 87, 0.03);
 }
 .upload-zone-premium.has-file {
-  border-color: rgba(0, 255, 136, 0.15);
+  border-color: rgba(52, 211, 153, 0.15);
 }
 
 /* Animated gradient border overlay */
@@ -294,9 +299,9 @@ body {
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(0, 212, 255, 0.15),
+    rgba(226, 62, 87, 0.15),
     rgba(139, 92, 246, 0.08),
-    rgba(0, 212, 255, 0.05),
+    rgba(226, 62, 87, 0.05),
     rgba(139, 92, 246, 0.15)
   );
   background-size: 300% 300%;
@@ -479,9 +484,9 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-void); }
-::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: rgba(226,62,87,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--redline); }
 
 /* ============================================
    PREMIUM NAV LINKS
@@ -500,7 +505,7 @@ body {
   left: 50%;
   width: 0;
   height: 1px;
-  background: var(--cyan);
+  background: var(--redline);
   transition: width 0.25s ease, left 0.25s ease;
 }
 .nav-link:hover::after {
@@ -509,7 +514,7 @@ body {
 }
 
 /* ============================================
-   STAT CARDS (glass surface with hover glow)
+   STAT CARDS
    ============================================ */
 .stat-card {
   background: rgba(255, 255, 255, 0.025);
@@ -537,13 +542,13 @@ body {
   pointer-events: none;
 }
 .stat-card:hover {
-  border-color: rgba(0,212,255,0.15);
+  border-color: rgba(226,62,87,0.15);
   transform: translateY(-4px);
-  box-shadow: 0 8px 40px rgba(0,212,255,0.08), 0 0 0 1px rgba(0,212,255,0.06);
+  box-shadow: 0 8px 40px rgba(226,62,87,0.06), 0 0 0 1px rgba(226,62,87,0.06);
 }
 
 /* ============================================
-   STEP CARDS (premium How It Works)
+   STEP CARDS
    ============================================ */
 .step-card {
   background: rgba(255, 255, 255, 0.025);
@@ -582,17 +587,17 @@ body {
 .step-card:hover {
   transform: translateY(-8px);
   border-color: var(--step-border, rgba(255,255,255,0.12));
-  box-shadow: 0 12px 48px var(--step-glow, rgba(0,212,255,0.08)),
-              0 0 0 1px var(--step-border, rgba(0,212,255,0.06));
+  box-shadow: 0 12px 48px var(--step-glow, rgba(226,62,87,0.06)),
+              0 0 0 1px var(--step-border, rgba(226,62,87,0.06));
 }
 
 /* ============================================
    CTA BUTTON
    ============================================ */
 .cta-button {
-  background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(139,92,246,0.15));
-  border: 1px solid rgba(0,212,255,0.3);
-  color: var(--cyan);
+  background: linear-gradient(135deg, rgba(226,62,87,0.12), rgba(139,92,246,0.12));
+  border: 1px solid rgba(226,62,87,0.3);
+  color: var(--redline);
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -604,14 +609,14 @@ body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(0,212,255,0.08) 50%,
+    rgba(226,62,87,0.06) 50%,
     transparent 100%
   );
   animation: cta-shimmer 3s ease-in-out infinite;
 }
 .cta-button:hover {
-  box-shadow: 0 0 40px rgba(0,212,255,0.2), 0 0 80px rgba(139,92,246,0.1);
-  border-color: rgba(0,212,255,0.5);
+  box-shadow: 0 0 40px rgba(226,62,87,0.15), 0 0 80px rgba(139,92,246,0.08);
+  border-color: rgba(226,62,87,0.5);
 }
 
 @keyframes cta-shimmer {
@@ -621,7 +626,7 @@ body {
 }
 
 /* ============================================
-   SECTION BADGE (reusable label chip)
+   SECTION BADGE
    ============================================ */
 .section-badge {
   display: inline-flex;
@@ -632,9 +637,9 @@ body {
   font-size: 0.7rem;
   font-family: var(--font-space), system-ui, sans-serif;
   letter-spacing: 0.12em;
-  color: var(--badge-color, var(--cyan));
-  background: var(--badge-bg, rgba(0,212,255,0.06));
-  border: 1px solid var(--badge-border, rgba(0,212,255,0.15));
+  color: var(--badge-color, var(--redline));
+  background: var(--badge-bg, rgba(226,62,87,0.06));
+  border: 1px solid var(--badge-border, rgba(226,62,87,0.15));
 }
 
 /* ============================================
@@ -705,124 +710,372 @@ body {
 }
 
 /* ============================================
-   REDESIGNED LANDING PAGE SPECIFIC STYLES (TECHNICAL FORENSIC THEME)
+   LANDING PAGE — ANNOTATION STYLES
    ============================================ */
-
-/* Technical background grid overlay */
-.tech-grid-overlay {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 50px 50px;
-  background-position: center top;
-}
-
-/* Precision corner markers styling */
-.tech-panel {
+.annotation-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
   position: relative;
-  background: rgba(8, 10, 16, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
+  z-index: 10;
 }
 
-/* Reticle corner marks */
-.tech-corners::before,
-.tech-corners::after,
-.tech-corners-inner::before,
-.tech-corners-inner::after {
+.annotation-dot::after {
   content: "";
   position: absolute;
-  width: 8px;
-  height: 8px;
-  border-color: rgba(255, 255, 255, 0.25);
+  inset: -4px;
+  border-radius: 50%;
+  background: inherit;
+  animation: annotation-pulse 2s ease-in-out infinite;
+}
+
+@keyframes annotation-pulse {
+  0%, 100% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.4); opacity: 0.3; }
+}
+
+/* Red ink pen strike */
+.pen-strike {
+  position: absolute;
+  top: 52%;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--redline);
+  transform: translateY(-50%) rotate(-1deg);
+  transform-origin: left;
+  border-radius: 99px;
+  opacity: 0.85;
+}
+
+/* Scan line sweep */
+@keyframes scanner-sweep {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}
+
+.scanner-laser {
+  animation: scanner-sweep 6s infinite linear;
+}
+
+/* Background ambient glow */
+.bg-ambient-glow {
+  filter: blur(140px);
+  pointer-events: none;
+  border-radius: 50%;
+  mix-blend-mode: plus-lighter;
+}
+
+/* ============================================
+   PAGE LAYOUT SYSTEM — breathing room
+   ============================================ */
+.page-shell {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .page-shell {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-shell {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+.page-main {
+  padding-top: 3.5rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+  .page-main {
+    padding-top: 4.5rem;
+    padding-bottom: 7rem;
+  }
+}
+
+.section-band {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-band {
+    padding-top: 6.5rem;
+    padding-bottom: 6.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-band {
+    padding-top: 7.5rem;
+    padding-bottom: 7.5rem;
+  }
+}
+
+.stack-loose > * + * {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .stack-loose > * + * {
+    margin-top: 2rem;
+  }
+}
+
+.card-pad {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .card-pad {
+    padding: 2rem;
+  }
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: all 0.3s ease;
+}
+
+.navbar-scrolled {
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   HISTORY PAGE — ROW CARDS
+   ============================================ */
+.history-row {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .history-row {
+    padding: 1.75rem 2rem;
+  }
+}
+
+.history-row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(226, 62, 87, 0.03),
+    transparent 40%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.history-row:hover::before {
+  opacity: 1;
+}
+
+.history-row:hover {
+  border-color: rgba(226, 62, 87, 0.15);
+  transform: translateX(4px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   PRINT / PDF EXPORT
+   ============================================ */
+.print-only-document {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 0.7in;
+    size: auto;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .report-page,
+  .report-page.is-printing {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  .report-page .page-shell {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .print-only-document {
+    display: block !important;
+  }
+
+  .print-section {
+    break-inside: avoid;
+    page-break-after: always;
+    margin-bottom: 1.5rem;
+  }
+
+  .print-section-last {
+    page-break-after: auto;
+  }
+
+  .print-h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: #111;
+    border-bottom: 2px solid #e23e57;
+    padding-bottom: 0.5rem;
+  }
+
+  .glass-card,
+  .slide-card {
+    background: #fafafa !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    color: #222 !important;
+    break-inside: avoid;
+    margin-bottom: 0.75rem;
+  }
+
+  .glass-card *,
+  .slide-card *,
+  .print-only-document p,
+  .print-only-document h3,
+  .print-only-document h4 {
+    color: #222 !important;
+  }
+
+  /* Hide animated particles / fixed chrome if any remain */
+  canvas,
+  .fixed {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   FORENSIC CORNER MARKS
+   ============================================ */
+.corner-marks {
+  position: relative;
+}
+
+.corner-marks::before,
+.corner-marks::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(226, 62, 87, 0.25);
   border-style: solid;
   pointer-events: none;
   z-index: 10;
 }
 
-.tech-corners::before {
-  top: -1px; left: -1px;
+.corner-marks::before {
+  top: 0; left: 0;
   border-width: 1px 0 0 1px;
 }
 
-.tech-corners::after {
-  top: -1px; right: -1px;
+.corner-marks::after {
+  top: 0; right: 0;
   border-width: 1px 1px 0 0;
 }
 
-.tech-corners-inner::before {
-  bottom: -1px; left: -1px;
-  border-width: 0 0 1px 1px;
+/* ============================================
+   CUSTOM SCROLLBARS
+   ============================================ */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.01);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
-.tech-corners-inner::after {
-  bottom: -1px; right: -1px;
-  border-width: 0 1px 1px 0;
-}
-
-/* Forensic Status Indicators */
-.pulse-dot {
+/* ============================================
+   TERMINAL WINDOW (used in analyze/report)
+   ============================================ */
+.terminal-window {
+  font-family: monospace;
+  background: rgba(4, 5, 8, 0.95);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   position: relative;
-  display: inline-block;
-  width: 6px;
-  height: 6px;
+  overflow: hidden;
+}
+
+.terminal-header {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
 }
-.pulse-dot::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-  animation: pulse-ring 1.8s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
-  opacity: 0;
+
+.terminal-content {
+  padding: 12px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #a7f3d0;
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(0.5); opacity: 0; }
-  50% { opacity: 0.5; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
-/* Redesigned Navigation link indicators */
-.tech-nav-link {
-  font-family: var(--font-space);
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.45);
-  transition: all 0.2s ease;
-  position: relative;
-}
-.tech-nav-link:hover {
-  color: #fff;
-}
-.tech-nav-link::before {
-  content: "[";
-  margin-right: 4px;
-  opacity: 0;
-  transform: translateX(4px);
-  transition: all 0.2s ease;
-  display: inline-block;
-}
-.tech-nav-link::after {
-  content: "]";
-  margin-left: 4px;
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: all 0.2s ease;
-  display: inline-block;
-}
-.tech-nav-link:hover::before {
-  opacity: 0.5;
-  transform: translateX(0);
-}
-.tech-nav-link:hover::after {
-  opacity: 0.5;
-  transform: translateX(0);
-}
-
-/* Database Registry (Stats) layout */
+/* ============================================
+   STATS TABLE (used in tech panels)
+   ============================================ */
 .stats-table {
   width: 100%;
   border-collapse: collapse;
@@ -835,7 +1088,9 @@ body {
   border-bottom: none;
 }
 
-/* Specimen Dissection (Interactive slide preview) hotspot points */
+/* ============================================
+   SLIDE HOTSPOT
+   ============================================ */
 .slide-hotspot {
   position: absolute;
   width: 24px;
@@ -877,7 +1132,75 @@ body {
   box-shadow: 0 0 15px currentColor;
 }
 
-/* File cabinet folder tabs for FAQs */
+@keyframes pulse-ring {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ============================================
+   TECH NAV LINK (used in forensic nav)
+   ============================================ */
+.tech-nav-link {
+  font-family: var(--font-space);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.45);
+  transition: all 0.2s ease;
+  position: relative;
+}
+.tech-nav-link:hover {
+  color: #fff;
+}
+.tech-nav-link::before {
+  content: "[";
+  margin-right: 4px;
+  opacity: 0;
+  transform: translateX(4px);
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+.tech-nav-link::after {
+  content: "]";
+  margin-left: 4px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+.tech-nav-link:hover::before {
+  opacity: 0.5;
+  transform: translateX(0);
+}
+.tech-nav-link:hover::after {
+  opacity: 0.5;
+  transform: translateX(0);
+}
+
+/* ============================================
+   PULSE DOT (forensic status)
+   ============================================ */
+.pulse-dot {
+  position: relative;
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  animation: pulse-ring 1.8s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+  opacity: 0;
+}
+
+/* ============================================
+   FOLDER TABS (FAQs)
+   ============================================ */
 .folder-tabs-container {
   display: flex;
   gap: 2px;
@@ -907,8 +1230,8 @@ body {
 
 .folder-tab.active {
   background: rgba(8, 10, 16, 0.7);
-  color: var(--cyan);
-  border-top: 2px solid var(--cyan);
+  color: var(--redline);
+  border-top: 2px solid var(--redline);
 }
 
 .folder-content-panel {
@@ -918,37 +1241,50 @@ body {
   padding: 2.25rem 2rem;
 }
 
-/* Interactive preview workspace */
 .dissection-workspace {
-  background: radial-gradient(circle at top right, rgba(0, 212, 255, 0.03), transparent 60%);
+  background: radial-gradient(circle at top right, rgba(226,62,87,0.03), transparent 60%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
   padding: 1rem;
 }
 
-/* ============================================
-   LANDING PAGE — EDITORIAL ANNOTATION STYLES
-   ============================================ */
-
-.annotation-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
+.tech-panel {
   position: relative;
+  background: rgba(8, 10, 16, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+.tech-corners::before,
+.tech-corners::after,
+.tech-corners-inner::before,
+.tech-corners-inner::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: rgba(255, 255, 255, 0.25);
+  border-style: solid;
+  pointer-events: none;
   z-index: 10;
 }
 
-.annotation-dot::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  background: inherit;
-  animation: annotation-pulse 2s ease-in-out infinite;
+.tech-corners::before {
+  top: -1px; left: -1px;
+  border-width: 1px 0 0 1px;
 }
 
-@keyframes annotation-pulse {
-  0%, 100% { transform: scale(0.8); opacity: 0; }
-  50% { transform: scale(1.4); opacity: 0.3; }
+.tech-corners::after {
+  top: -1px; right: -1px;
+  border-width: 1px 1px 0 0;
 }
 
+.tech-corners-inner::before {
+  bottom: -1px; left: -1px;
+  border-width: 0 0 1px 1px;
+}
+
+.tech-corners-inner::after {
+  bottom: -1px; right: -1px;
+  border-width: 0 1px 1px 0;
+}

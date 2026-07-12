@@ -3,7 +3,17 @@ import { z } from 'zod';
 import { pdfParserTool } from '../tools/pdf-parser-tool';
 import { checkSafetyWithEnkrypt } from '../public/enkrypt';
 
-// Helper function to run agent generation through the Enkrypt AI Safety Gate with retry logic
+/** Cap huge decks so agent latency stays bounded (head + tail keeps both ends of pitch). */
+function clipForAgent(text: string, maxChars = 14000): string {
+  if (!text || text.length <= maxChars) return text;
+  const half = Math.floor(maxChars / 2) - 40;
+  console.log(
+    `[Workflow] Clipping pitch text from ${text.length} to ~${maxChars} chars for agent prompts`
+  );
+  return `${text.slice(0, half)}\n\n[... middle of deck omitted for length ...]\n\n${text.slice(-half)}`;
+}
+
+// Enkrypt safety gate: 1 generate + optional 1 retry (faster; still gated)
 async function generateWithSafetyGate({
   agent,
   basePrompt,
@@ -14,7 +24,7 @@ async function generateWithSafetyGate({
   agentName: string;
 }): Promise<string> {
   let attempt = 0;
-  const maxAttempts = 3; // 1 initial + 2 retries
+  const maxAttempts = 2; // 1 initial + 1 retry
   let currentPrompt = basePrompt;
   let responseText = '';
 
@@ -24,7 +34,6 @@ async function generateWithSafetyGate({
     const response = await agent.generate(currentPrompt);
     responseText = response.text;
 
-    // Evaluate response text using the Enkrypt AI Safety Gate
     const safetyResult = await checkSafetyWithEnkrypt({
       text: responseText,
       agentName,
@@ -42,14 +51,13 @@ async function generateWithSafetyGate({
     );
 
     if (attempt < maxAttempts) {
-      // Regrow prompt with safety failure feedback for the retry
       currentPrompt = `
 Here is your previous generation output:
 ---
 ${responseText}
 ---
 The safety checker flagged this output for the following reasons:
-${safetyResult.reasons.map((r) => `- ${r}`).join('\n')}
+${safetyResult.reasons.map((r: string) => `- ${r}`).join('\n')}
 
 Please regenerate, fully correcting all of these issues while maintaining the original requirements:
 ${basePrompt}
@@ -57,7 +65,7 @@ ${basePrompt}
     }
   }
 
-  console.error(`[Safety Gate] All ${maxAttempts} attempts failed safety check for ${agentName}. Returning latest output.`);
+  console.error(`[Safety Gate] All ${maxAttempts} attempts failed for ${agentName}. Returning latest output.`);
   return responseText;
 }
 
@@ -108,7 +116,20 @@ const devilsAdvocateStep = createStep({
       throw new Error('DevilsAdvocateAgent not registered');
     }
 
-    const basePrompt = `Generate 10-15 brutal investor questions for the following startup pitch:\n\n${inputData.extractedText}`;
+    const pitch = clipForAgent(inputData.extractedText);
+    const basePrompt = `Generate exactly 10 brutal investor questions for the following startup pitch.
+
+STRICT OUTPUT RULES:
+- Plain text only. Do NOT use Markdown (no **, __, #, or backticks).
+- Format each item exactly as:
+1. Question: <question ending with ?>
+   Why: <1-2 sentences>
+
+2. Question: ...
+   Why: ...
+
+Pitch text:
+${pitch}`;
     const resultText = await generateWithSafetyGate({
       agent,
       basePrompt,
@@ -146,7 +167,18 @@ const marketValidatorStep = createStep({
       throw new Error('MarketValidatorAgent not registered');
     }
 
-    const basePrompt = `Review the following startup claims, extract core claims, query the vector database, and output the validation report enforcing the >= 0.78 similarity threshold:\n\n${inputData.extractedText}`;
+    const pitch = clipForAgent(inputData.extractedText);
+    const basePrompt = `Extract exactly 3 core claims from this pitch, query the vector database for each claim sequentially, and output the validation report (threshold similarity >= 0.78). Plain text only.
+
+Use this format per claim:
+Claim: ...
+Validation Status: Safe | HIGH_RISK
+Similarity Score: ...
+Lesson: ...
+Match: ...
+
+Pitch text:
+${pitch}`;
     const resultText = await generateWithSafetyGate({
       agent,
       basePrompt,
@@ -184,23 +216,31 @@ const improvementStep = createStep({
       throw new Error('ImprovementAgent not registered');
     }
 
+    const pitch = clipForAgent(inputData.extractedText, 10000);
+    const questions = clipForAgent(inputData.investorQuestions, 6000);
+    const validation = clipForAgent(inputData.validationReport, 6000);
+
     const basePrompt = `
-      Below is the complete analysis data for the startup pitch deck:
+Below is analysis data for the startup pitch deck.
 
-      --- ORIGINAL PITCH DECK TEXT ---
-      ${inputData.extractedText}
+--- PITCH TEXT ---
+${pitch}
 
-      --- BRUTAL INVESTOR QUESTIONS (DEVIL'S ADVOCATE) ---
-      ${inputData.investorQuestions}
+--- DEVIL'S ADVOCATE QUESTIONS ---
+${questions}
 
-      --- HISTORICAL FAILURE REPORT (MARKET VALIDATOR) ---
-      ${inputData.validationReport}
+--- MARKET VALIDATION ---
+${validation}
 
-      Please query the pitch benchmarks database for successful pitch structure formats. 
-      Then, synthesize all of the above and generate a detailed Action Plan containing:
-      1. Narrative Reframe (how to address the brutal questions proactively).
-      2. Risk Mitigation (how to address the flagged market risks and failures).
-      3. Slide-by-Slide Restructuring (specific slide improvements based on successful benchmarks).
+Call pitch-benchmarker at most twice (sequentially). Then output ONLY slide-by-slide rewrites in plain text:
+
+Slide 1: <title>
+Action: <2-4 sentences>
+
+Slide 2: <title>
+Action: <...>
+
+Cover the main slides of the deck (up to 10). No markdown. No separate Narrative/Risk mega-sections after the slides.
     `.trim();
 
     const resultText = await generateWithSafetyGate({

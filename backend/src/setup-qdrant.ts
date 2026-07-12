@@ -24,18 +24,18 @@ async function setupQdrant() {
       console.log(`Checking collection: "${name}"...`);
       const info = await client.getCollection(name);
       const existingSize = (info.config as any)?.params?.vectors?.size;
-      if (existingSize !== 3072) {
+      if (existingSize !== 1024) {
         console.log(`-> Collection "${name}" exists but has mismatched dimensions (${existingSize}). Deleting and recreating...`);
         await client.deleteCollection(name);
         await client.createCollection(name, {
           vectors: {
-            size: 3072, // 3072 dimensions for google/gemini-embedding-001 model
+            size: 1024, // 1024 dimensions for Qwen/Qwen3-Embedding-0.6B model
             distance: 'Cosine',
           },
         });
-        console.log(`-> Collection "${name}" recreated with 3072 dimensions!`);
+        console.log(`-> Collection "${name}" recreated with 1024 dimensions!`);
       } else {
-        console.log(`-> Collection "${name}" already exists with correct dimensions (3072).`);
+        console.log(`-> Collection "${name}" already exists with correct dimensions (1024).`);
       }
     } catch (error: any) {
       // Typically throws a 404 error if it does not exist
@@ -43,7 +43,7 @@ async function setupQdrant() {
       try {
         await client.createCollection(name, {
           vectors: {
-            size: 3072, // 3072 dimensions for google/gemini-embedding-001 model
+            size: 1024, // 1024 dimensions for Qwen/Qwen3-Embedding-0.6B model
             distance: 'Cosine',
           },
         });

@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 interface SpeedometerProps {
@@ -7,79 +6,99 @@ interface SpeedometerProps {
   size?: number;
 }
 
+/**
+ * Semicircle gauge (180°). Arc, fill, ticks, and needle share one angle model.
+ * SVG y-down: angles measured clockwise from +x after converting from math degrees.
+ */
 export default function SpeedometerGauge({ score, size = 220 }: SpeedometerProps) {
-  const needleRef = useRef<SVGLineElement>(null);
-  const center = size / 2;
-  const radius = size * 0.38;
-  const strokeWidth = size * 0.08;
+  const clamped = Math.max(0, Math.min(100, score));
+  const centerX = size / 2;
+  const centerY = size * 0.58;
+  const radius = size * 0.4;
+  const strokeWidth = size * 0.07;
 
-  // Arc from 210deg to 330deg (spread of 240deg)
-  const startAngle = 210;
-  const endAngle = 330;
-  const totalAngle = 360 - startAngle + endAngle; // 240deg
+  // Left (0) → right (100) along bottom semicircle: 180° → 360°
+  const startAngle = 180;
+  const totalAngle = 180;
 
-  const polarToXY = (angle: number, r: number) => {
-    const rad = ((angle - 90) * Math.PI) / 180;
-    return { x: center + r * Math.cos(rad), y: center + r * Math.sin(rad) };
+  const polarToXY = (angleDeg: number, r: number) => {
+    // Convert: 0° = right, 90° = down in SVG after standard math polar with -90 offset
+    const rad = ((angleDeg - 90) * Math.PI) / 180;
+    return {
+      x: centerX + r * Math.cos(rad),
+      y: centerY + r * Math.sin(rad),
+    };
   };
 
   const describeArc = (from: number, to: number, r: number) => {
     const s = polarToXY(from, r);
     const e = polarToXY(to, r);
-    const large = to - from > 180 ? 1 : 0;
+    const sweep = to - from;
+    const large = Math.abs(sweep) > 180 ? 1 : 0;
+    // sweep-flag 1 = clockwise in SVG when y increases downward... use 1 for 180→360
     return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y}`;
   };
 
-  // Color based on score
   const getColor = () => {
-    if (score < 40) return "#ff3366";
-    if (score < 65) return "#ffb800";
-    return "#00ff88";
+    if (clamped < 40) return "#E23E57";
+    if (clamped < 65) return "#D4A843";
+    return "#34D399";
   };
 
-  const needleAngle = startAngle + (score / 100) * totalAngle;
-  const needleEnd = polarToXY(needleAngle, radius * 0.85);
   const color = getColor();
+  const arcLength = Math.PI * radius; // 180° of circumference
+  const fillLength = (clamped / 100) * arcLength;
+  const needleAngle = startAngle + (clamped / 100) * totalAngle;
+  const needleEnd = polarToXY(needleAngle, radius * 0.82);
+  const endAngle = startAngle + totalAngle;
+
+  const viewH = size * 0.72;
 
   return (
-    <div className="flex flex-col items-center gap-2">
-      <svg width={size} height={size * 0.75} viewBox={`0 0 ${size} ${size}`}>
-        {/* Background arc */}
+    <div className="flex flex-col items-center gap-1">
+      <svg
+        width={size}
+        height={viewH}
+        viewBox={`0 0 ${size} ${viewH + 8}`}
+        role="img"
+        aria-label={`Pitch health score ${clamped} out of 100`}
+      >
+        {/* Track */}
         <path
           d={describeArc(startAngle, endAngle, radius)}
           fill="none"
-          stroke="rgba(255,255,255,0.06)"
+          stroke="rgba(255,255,255,0.08)"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
         />
 
-        {/* Colored fill arc */}
+        {/* Value fill */}
         <motion.path
           d={describeArc(startAngle, endAngle, radius)}
           fill="none"
           stroke={color}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
-          strokeDasharray={`${(score / 100) * (2 * Math.PI * radius * (240 / 360))} 9999`}
-          initial={{ strokeDasharray: "0 9999" }}
-          animate={{
-            strokeDasharray: `${(score / 100) * (2 * Math.PI * radius * (240 / 360))} 9999`,
-          }}
-          transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-          style={{ filter: `drop-shadow(0 0 8px ${color})` }}
+          strokeDasharray={`${fillLength} ${arcLength + 20}`}
+          initial={{ strokeDasharray: `0 ${arcLength + 20}` }}
+          animate={{ strokeDasharray: `${fillLength} ${arcLength + 20}` }}
+          transition={{ duration: 1.1, ease: "easeOut", delay: 0.2 }}
+          style={{ filter: `drop-shadow(0 0 6px ${color}66)` }}
         />
 
-        {/* Tick marks */}
-        {[0, 20, 40, 60, 80, 100].map((tick) => {
+        {/* Ticks */}
+        {[0, 25, 50, 75, 100].map((tick) => {
           const angle = startAngle + (tick / 100) * totalAngle;
-          const inner = polarToXY(angle, radius - strokeWidth * 0.8);
-          const outer = polarToXY(angle, radius + strokeWidth * 0.2);
+          const inner = polarToXY(angle, radius - strokeWidth * 0.85);
+          const outer = polarToXY(angle, radius + strokeWidth * 0.35);
           return (
             <line
               key={tick}
-              x1={inner.x} y1={inner.y}
-              x2={outer.x} y2={outer.y}
-              stroke="rgba(255,255,255,0.2)"
+              x1={inner.x}
+              y1={inner.y}
+              x2={outer.x}
+              y2={outer.y}
+              stroke="rgba(255,255,255,0.25)"
               strokeWidth={1.5}
             />
           );
@@ -87,56 +106,67 @@ export default function SpeedometerGauge({ score, size = 220 }: SpeedometerProps
 
         {/* Needle */}
         <motion.line
-          ref={needleRef}
-          x1={center} y1={center}
-          x2={needleEnd.x} y2={needleEnd.y}
-          stroke="white"
-          strokeWidth={2}
+          x1={centerX}
+          y1={centerY}
+          x2={needleEnd.x}
+          y2={needleEnd.y}
+          stroke="rgba(232,228,220,0.95)"
+          strokeWidth={2.5}
           strokeLinecap="round"
           initial={{
-            x2: polarToXY(startAngle, radius * 0.85).x,
-            y2: polarToXY(startAngle, radius * 0.85).y,
+            x2: polarToXY(startAngle, radius * 0.82).x,
+            y2: polarToXY(startAngle, radius * 0.82).y,
           }}
           animate={{ x2: needleEnd.x, y2: needleEnd.y }}
-          transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-          style={{ filter: "drop-shadow(0 0 4px rgba(255,255,255,0.8))" }}
+          transition={{ duration: 1.1, ease: "easeOut", delay: 0.2 }}
         />
 
-        {/* Center dot */}
-        <circle cx={center} cy={center} r={6} fill="white" opacity={0.9} />
+        <circle cx={centerX} cy={centerY} r={5} fill="rgba(232,228,220,0.95)" />
 
-        {/* Score text */}
+        {/* Score */}
         <text
-          x={center}
-          y={center + radius * 0.55}
+          x={centerX}
+          y={centerY - radius * 0.22}
           textAnchor="middle"
           fill={color}
-          fontSize={size * 0.12}
+          fontSize={size * 0.14}
           fontWeight="700"
-          fontFamily="var(--font-space)"
-          style={{ filter: `drop-shadow(0 0 6px ${color})` }}
+          fontFamily="var(--font-space), system-ui, sans-serif"
         >
-          {score}
+          {clamped}
         </text>
         <text
-          x={center}
-          y={center + radius * 0.75}
+          x={centerX}
+          y={centerY - radius * 0.02}
           textAnchor="middle"
-          fill="rgba(226,232,240,0.4)"
-          fontSize={size * 0.06}
-          fontFamily="var(--font-inter)"
+          fill="rgba(226,232,240,0.45)"
+          fontSize={size * 0.055}
+          fontFamily="var(--font-inter), system-ui, sans-serif"
         >
           / 100
         </text>
 
-        {/* Labels */}
-        <text x={polarToXY(startAngle, radius + 24).x} y={polarToXY(startAngle, radius + 24).y}
-          textAnchor="middle" fill="rgba(255,51,102,0.6)" fontSize={10} fontFamily="var(--font-inter)">0</text>
-        <text x={polarToXY(endAngle, radius + 24).x} y={polarToXY(endAngle, radius + 24).y}
-          textAnchor="middle" fill="rgba(0,255,136,0.6)" fontSize={10} fontFamily="var(--font-inter)">100</text>
+        <text
+          x={polarToXY(startAngle, radius + 18).x}
+          y={polarToXY(startAngle, radius + 18).y + 4}
+          textAnchor="middle"
+          fill="rgba(226,62,87,0.7)"
+          fontSize={10}
+        >
+          0
+        </text>
+        <text
+          x={polarToXY(endAngle, radius + 18).x}
+          y={polarToXY(endAngle, radius + 18).y + 4}
+          textAnchor="middle"
+          fill="rgba(52,211,153,0.7)"
+          fontSize={10}
+        >
+          100
+        </text>
       </svg>
 
-      <p className="text-xs font-space" style={{ color: "rgba(226,232,240,0.4)" }}>
+      <p className="text-xs font-space" style={{ color: "var(--ash)" }}>
         PITCH HEALTH SCORE
       </p>
     </div>

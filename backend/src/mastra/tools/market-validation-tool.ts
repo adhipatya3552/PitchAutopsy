@@ -1,7 +1,7 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
 import { QdrantVector } from '@mastra/qdrant';
-import { ModelRouterEmbeddingModel } from '@mastra/core/llm';
+import { getEmbeddingModel } from '../model';
 import { embed } from 'ai';
 
 export const marketValidationTool = createTool({
@@ -27,7 +27,7 @@ export const marketValidationTool = createTool({
         apiKey: process.env.QDRANT_API_KEY!,
       });
 
-      const embedder = new ModelRouterEmbeddingModel("google/gemini-embedding-001");
+      const embedder = getEmbeddingModel();
       const { embedding } = await embed({
         model: embedder,
         value: claim,

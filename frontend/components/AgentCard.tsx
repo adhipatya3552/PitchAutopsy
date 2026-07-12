@@ -10,6 +10,7 @@ interface AgentCardProps {
   subtitle: string;
   icon: React.ReactNode;
   status: AgentStatus;
+  /** @deprecated Long agent text is not shown on analyze cards — report holds full output */
   output?: string;
   color: "purple" | "amber" | "green";
   index: number;
@@ -42,8 +43,20 @@ const colorMap = {
   },
 };
 
+const statusHint: Record<AgentStatus, string> = {
+  pending: "Waiting for previous step…",
+  active: "Running…",
+  done: "Complete — full results on report",
+  error: "Step failed",
+};
+
 export default function AgentCard({
-  name, subtitle, icon, status, output, color, index,
+  name,
+  subtitle,
+  icon,
+  status,
+  color,
+  index,
 }: AgentCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -55,8 +68,8 @@ export default function AgentCard({
     const rect = card.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const rotY = ((e.clientX - cx) / rect.width) * 10;
-    const rotX = -((e.clientY - cy) / rect.height) * 10;
+    const rotY = ((e.clientX - cx) / rect.width) * 6;
+    const rotX = -((e.clientY - cy) / rect.height) * 6;
     setTilt({ x: rotX, y: rotY });
   };
 
@@ -68,145 +81,142 @@ export default function AgentCard({
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, x: -40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.06 }}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      style={{
-        perspective: "1000px",
-        transformStyle: "preserve-3d",
-      }}
     >
-      <motion.div
-        className={`glass-card border-spin ${c.spin} p-7 transition-all duration-300 ${
+      <div
+        className={`glass-card border-spin ${c.spin} p-6 md:p-7 transition-all duration-300 ${
           isActive ? `${c.glow} ${c.pulse}` : isDone ? c.glow : ""
         }`}
         style={{
           transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-          transition: tilt.x === 0 && tilt.y === 0 ? "transform 0.5s ease" : "transform 0.1s ease",
-          borderColor: isActive || isDone ? `${c.accent}40` : "var(--glass-border)",
+          transition:
+            tilt.x === 0 && tilt.y === 0
+              ? "transform 0.4s ease"
+              : "transform 0.1s ease",
+          borderColor:
+            isActive || isDone ? `${c.accent}40` : "var(--glass-border)",
         }}
       >
-        {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            {/* Icon bubble */}
-            <motion.div
-              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-4 min-w-0">
+            <div
+              className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
               style={{
                 background: `${c.dim}`,
                 border: `1px solid ${c.accent}40`,
                 color: c.accent,
               }}
-              animate={isActive ? { scale: [1, 1.05, 1] } : {}}
-              transition={{ duration: 1.5, repeat: Infinity }}
             >
               {icon}
-            </motion.div>
-            <div>
-              <h3 className="font-space font-bold text-base" style={{ color: "#e2e8f0" }}>
+            </div>
+            <div className="min-w-0">
+              <h3
+                className="font-space font-bold text-base"
+                style={{ color: "var(--parchment)" }}
+              >
                 {name}
               </h3>
-              <p className="text-xs mt-0.5" style={{ color: "rgba(226,232,240,0.45)" }}>
+              <p className="text-xs mt-0.5" style={{ color: "var(--ash)" }}>
                 {subtitle}
               </p>
             </div>
           </div>
-
-          {/* Status badge */}
           <StatusBadge status={status} accent={c.accent} />
         </div>
 
-        {/* Progress bar */}
         {(isActive || isDone) && (
-          <div className="progress-bar mb-4">
+          <div className="progress-bar mt-5 mb-3">
             <motion.div
               className="progress-bar-fill"
               style={{ background: c.bar }}
               initial={{ width: "0%" }}
               animate={{ width: isDone ? "100%" : "65%" }}
-              transition={{ duration: isDone ? 0.5 : 2, ease: "easeOut" }}
+              transition={{ duration: isDone ? 0.4 : 1.2, ease: "easeOut" }}
             />
           </div>
         )}
 
-        {/* Output text */}
-        {output && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            transition={{ duration: 0.4 }}
-            className="mt-2 p-3 rounded-xl text-xs leading-relaxed overflow-hidden"
-            style={{
-              background: "rgba(0,0,0,0.3)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              color: "rgba(226,232,240,0.7)",
-              maxHeight: "160px",
-              overflowY: "auto",
-              fontFamily: "var(--font-inter)",
-            }}
-          >
-            <TypewriterText text={output} isActive={isActive} />
-            {isActive && <span className="cursor-blink" />}
-          </motion.div>
-        )}
-
-        {/* Pending state */}
-        {status === "pending" && (
-          <p className="text-xs mt-2" style={{ color: "rgba(226,232,240,0.3)" }}>
-            Waiting for previous step to complete...
-          </p>
-        )}
-      </motion.div>
+        <p
+          className="text-xs mt-3"
+          style={{
+            color:
+              status === "error"
+                ? "var(--redline)"
+                : status === "done"
+                  ? "var(--remedy)"
+                  : "var(--ash)",
+          }}
+        >
+          {statusHint[status]}
+        </p>
+      </div>
     </motion.div>
   );
 }
 
-function StatusBadge({ status, accent }: { status: AgentStatus; accent: string }) {
+function StatusBadge({
+  status,
+  accent,
+}: {
+  status: AgentStatus;
+  accent: string;
+}) {
   if (status === "pending") {
     return (
-      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs"
-        style={{ background: "rgba(255,255,255,0.05)", color: "rgba(226,232,240,0.4)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      <div
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs flex-shrink-0"
+        style={{
+          background: "rgba(255,255,255,0.05)",
+          color: "rgba(226,232,240,0.4)",
+          border: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
         <Clock size={10} /> Pending
       </div>
     );
   }
   if (status === "active") {
     return (
-      <motion.div
-        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs"
-        style={{ background: `${accent}20`, color: accent, border: `1px solid ${accent}40` }}
-        animate={{ opacity: [1, 0.6, 1] }}
-        transition={{ duration: 1.5, repeat: Infinity }}
+      <div
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs flex-shrink-0"
+        style={{
+          background: `${accent}20`,
+          color: accent,
+          border: `1px solid ${accent}40`,
+        }}
       >
         <Loader2 size={10} className="animate-spin" /> Active
-      </motion.div>
+      </div>
     );
   }
   if (status === "done") {
     return (
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 300 }}
-        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs"
-        style={{ background: "rgba(0,255,136,0.1)", color: "var(--green)", border: "1px solid rgba(0,255,136,0.3)" }}
+      <div
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs flex-shrink-0"
+        style={{
+          background: "rgba(0,255,136,0.1)",
+          color: "var(--green)",
+          border: "1px solid rgba(0,255,136,0.3)",
+        }}
       >
         <CheckCircle size={10} /> Done
-      </motion.div>
+      </div>
     );
   }
   return (
-    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs"
-      style={{ background: "rgba(255,51,102,0.1)", color: "var(--red)", border: "1px solid rgba(255,51,102,0.3)" }}>
+    <div
+      className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs flex-shrink-0"
+      style={{
+        background: "rgba(255,51,102,0.1)",
+        color: "var(--red)",
+        border: "1px solid rgba(255,51,102,0.3)",
+      }}
+    >
       Error
     </div>
   );
-}
-
-function TypewriterText({ text, isActive }: { text: string; isActive: boolean }) {
-  if (!isActive) return <span>{text}</span>;
-  // For active, just show the text (SSE already streams char-by-char via state)
-  return <span>{text}</span>;
 }

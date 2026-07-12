@@ -1,0 +1,549 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R 22 0 R 24 0 R] /Count 10 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 374 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(NovaBite) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(AI-Powered Restaurant Discovery) Tj
+-50 0 Td
+50 690 Td
+() Tj
+-50 0 Td
+50 670 Td
+(Seed Round Pitch Deck) Tj
+-50 0 Td
+50 650 Td
+(Q3 2026) Tj
+-50 0 Td
+50 630 Td
+() Tj
+-50 0 Td
+50 610 Td
+(Confidential) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(1 / 10) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 5 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+7 0 obj
+<< /Length 664 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(The Problem) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(Diners waste 23 minutes per meal decision.) Tj
+-50 0 Td
+50 690 Td
+(72% of restaurant discovery happens through word-of-mouth,) Tj
+-50 0 Td
+50 670 Td
+(which is inherently biased and limited.) Tj
+-50 0 Td
+50 650 Td
+() Tj
+-50 0 Td
+50 630 Td
+(Existing platforms \(Yelp, Google Maps\) surface reviews) Tj
+-50 0 Td
+50 610 Td
+(but fail to understand personal taste profiles.) Tj
+-50 0 Td
+50 590 Td
+() Tj
+-50 0 Td
+50 570 Td
+(Result: 40% of diners report regret after trying a new restaurant.) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(2 / 10) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 7 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+9 0 obj
+<< /Length 686 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(Our Solution) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(NovaBite uses a proprietary taste-matching algorithm) Tj
+-50 0 Td
+50 690 Td
+(trained on 2.1M anonymized dining transactions.) Tj
+-50 0 Td
+50 670 Td
+() Tj
+-50 0 Td
+50 650 Td
+(Key Features:) Tj
+-50 0 Td
+50 630 Td
+(- Taste DNA profiling from 12-question onboarding quiz) Tj
+-50 0 Td
+50 610 Td
+(- Real-time menu analysis using computer vision) Tj
+-50 0 Td
+50 590 Td
+(- Social graph integration for trusted circle recommendations) Tj
+-50 0 Td
+50 570 Td
+(- Dynamic pricing alerts for premium dining experiences) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(3 / 10) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 9 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+11 0 obj
+<< /Length 665 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(Market Size) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(TAM: $180B global restaurant discovery and reservation market) Tj
+-50 0 Td
+50 690 Td
+(SAM: $42B online food discovery in North America and Europe) Tj
+-50 0 Td
+50 670 Td
+(SOM: $2.1B - we capture 5% of SAM in 3 years) Tj
+-50 0 Td
+50 650 Td
+() Tj
+-50 0 Td
+50 630 Td
+(We plan to capture 1% of the global restaurant) Tj
+-50 0 Td
+50 610 Td
+(technology market within 18 months of launch.) Tj
+-50 0 Td
+50 590 Td
+() Tj
+-50 0 Td
+50 570 Td
+(Growth rate: 24% CAGR in restaurant tech \(2024-2028\)) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(4 / 10) Tj
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 11 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+13 0 obj
+<< /Length 642 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(Business Model) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(Three revenue streams:) Tj
+-50 0 Td
+50 690 Td
+() Tj
+-50 0 Td
+50 670 Td
+(1. Restaurant partnerships: $299/mo SaaS for premium placement) Tj
+-50 0 Td
+50 650 Td
+(2. Consumer premium: $9.99/mo for advanced taste matching) Tj
+-50 0 Td
+50 630 Td
+(3. Data licensing: Anonymized dining trend reports to CPG brands) Tj
+-50 0 Td
+50 610 Td
+() Tj
+-50 0 Td
+50 590 Td
+(Blended gross margin target: 78%) Tj
+-50 0 Td
+50 570 Td
+(Current unit economics: LTV:CAC ratio of 1.8:1) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(5 / 10) Tj
+ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 13 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+15 0 obj
+<< /Length 642 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(Traction) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(Launched beta in San Francisco \(March 2026\):) Tj
+-50 0 Td
+50 690 Td
+() Tj
+-50 0 Td
+50 670 Td
+(- 14,200 registered users \(organic, zero ad spend\)) Tj
+-50 0 Td
+50 650 Td
+(- 340 restaurant partners onboarded) Tj
+-50 0 Td
+50 630 Td
+(- 67% monthly active user retention) Tj
+-50 0 Td
+50 610 Td
+(- $38K MRR \(growing 22% month-over-month\)) Tj
+-50 0 Td
+50 590 Td
+(- NPS score: 72) Tj
+-50 0 Td
+50 570 Td
+() Tj
+-50 0 Td
+50 550 Td
+(Waitlist: 41,000 users across 6 cities) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(6 / 10) Tj
+ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 15 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+17 0 obj
+<< /Length 739 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(Revenue Projections) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(Year 1: $1.2M ARR \(current trajectory\)) Tj
+-50 0 Td
+50 690 Td
+(Year 2: $8.4M ARR \(zero churn assumption\)) Tj
+-50 0 Td
+50 670 Td
+(Year 3: $52M ARR \(expansion into 40 cities\)) Tj
+-50 0 Td
+50 650 Td
+() Tj
+-50 0 Td
+50 630 Td
+(Key assumptions:) Tj
+-50 0 Td
+50 610 Td
+(- 15% monthly user growth sustained for 24 months) Tj
+-50 0 Td
+50 590 Td
+(- Restaurant partner conversion rate holds at 12%) Tj
+-50 0 Td
+50 570 Td
+(- Zero customer churn in Year 2 during scaling phase) Tj
+-50 0 Td
+50 550 Td
+(- 3x expansion revenue from existing restaurant partners) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(7 / 10) Tj
+ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 17 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+19 0 obj
+<< /Length 786 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(Competition) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(Competitor Landscape:) Tj
+-50 0 Td
+50 690 Td
+() Tj
+-50 0 Td
+50 670 Td
+(Yelp: Legacy platform, no personalization. Slow.) Tj
+-50 0 Td
+50 650 Td
+(Google Maps: Broad but shallow. No taste matching.) Tj
+-50 0 Td
+50 630 Td
+(The Infatuation: Editorial, not scalable. Manual.) Tj
+-50 0 Td
+50 610 Td
+(OpenTable: Reservations only. No discovery engine.) Tj
+-50 0 Td
+50 590 Td
+() Tj
+-50 0 Td
+50 570 Td
+(NovaBite: AI-native. Instant personalization.) Tj
+-50 0 Td
+50 550 Td
+(We have 100% feature superiority over all incumbents.) Tj
+-50 0 Td
+50 530 Td
+(Patent pending on taste-matching algorithm \(USPTO #2026-0847\).) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(8 / 10) Tj
+ET
+endstream
+endobj
+20 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 19 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+21 0 obj
+<< /Length 652 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(Team) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(Sarah Chen - CEO) Tj
+-50 0 Td
+50 690 Td
+(  Ex-DoorDash Head of Consumer Product \(2019-2024\)) Tj
+-50 0 Td
+50 670 Td
+() Tj
+-50 0 Td
+50 650 Td
+(Marcus Rivera - CTO) Tj
+-50 0 Td
+50 630 Td
+(  Ex-Google Brain, ML researcher, 14 publications) Tj
+-50 0 Td
+50 610 Td
+() Tj
+-50 0 Td
+50 590 Td
+(Priya Patel - VP Growth) Tj
+-50 0 Td
+50 570 Td
+(  Scaled Notion from 1M to 30M users) Tj
+-50 0 Td
+50 550 Td
+() Tj
+-50 0 Td
+50 530 Td
+(12 full-time employees across engineering, design, and ops) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(9 / 10) Tj
+ET
+endstream
+endobj
+22 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 21 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+23 0 obj
+<< /Length 727 >>
+stream
+BT
+/F2 22 Tf
+50 750 Td
+(The Ask) Tj
+ET
+50 745 m 350 745 l 1 0 0 RG 0.5 w S
+0 0 0 RG
+BT
+/F1 11 Tf
+50 710 Td
+(Raising: $4.5M Seed Round) Tj
+-50 0 Td
+50 690 Td
+(Valuation: $22M pre-money) Tj
+-50 0 Td
+50 670 Td
+() Tj
+-50 0 Td
+50 650 Td
+(Use of Funds:) Tj
+-50 0 Td
+50 630 Td
+(- 45% Engineering \(ML infrastructure, mobile apps\)) Tj
+-50 0 Td
+50 610 Td
+(- 25% Go-to-market \(6 new city launches\)) Tj
+-50 0 Td
+50 590 Td
+(- 20% Restaurant sales team expansion) Tj
+-50 0 Td
+50 570 Td
+(- 10% Operations and legal) Tj
+-50 0 Td
+50 550 Td
+() Tj
+-50 0 Td
+50 530 Td
+(Target close: September 2026) Tj
+-50 0 Td
+50 510 Td
+() Tj
+-50 0 Td
+50 490 Td
+(Contact: sarah@novabite.ai) Tj
+-50 0 Td
+ET
+BT
+/F1 9 Tf
+0.6 0.6 0.6 rg
+520 30 Td
+(10 / 10) Tj
+ET
+endstream
+endobj
+24 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 23 0 R /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> >>
+endobj
+xref
+0 25
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000178 00000 n 
+0000000248 00000 n 
+0000000323 00000 n 
+0000000747 00000 n 
+0000000883 00000 n 
+0000001597 00000 n 
+0000001733 00000 n 
+0000002469 00000 n 
+0000002606 00000 n 
+0000003322 00000 n 
+0000003460 00000 n 
+0000004153 00000 n 
+0000004291 00000 n 
+0000004984 00000 n 
+0000005122 00000 n 
+0000005912 00000 n 
+0000006050 00000 n 
+0000006887 00000 n 
+0000007025 00000 n 
+0000007728 00000 n 
+0000007866 00000 n 
+0000008644 00000 n 
+trailer
+<< /Size 25 /Root 1 0 R >>
+startxref
+8782
+%%EOF

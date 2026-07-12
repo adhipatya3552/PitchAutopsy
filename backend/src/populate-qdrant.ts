@@ -1,5 +1,5 @@
 import { QdrantVector } from '@mastra/qdrant';
-import { ModelRouterEmbeddingModel } from '@mastra/core/llm';
+import { getEmbeddingModel } from './mastra/model';
 import { embedMany } from 'ai';
 
 // Clean up text for easier reading
@@ -23,7 +23,7 @@ async function populate() {
     apiKey,
   });
 
-  const embedder = new ModelRouterEmbeddingModel("google/gemini-embedding-001");
+  const embedder = getEmbeddingModel();
 
   // 1. Startup Failures Dataset
   const startupFailures = [

@@ -107,12 +107,18 @@ ${text}
     constructiveness = typeof result.constructiveness === 'number' ? result.constructiveness : 8;
     scoreCalibration = typeof result.scoreCalibration === 'number' ? result.scoreCalibration : 8;
 
-    if (Array.isArray(result.reasons)) {
-      reasons.push(...result.reasons);
-    }
+    // Log general evaluator explanations but do not treat them as safety violations
+    const explanations = Array.isArray(result.reasons) ? result.reasons : [];
+    console.log(`[Enkrypt AI] Evaluator Feedback:`, explanations.join(' | '));
 
-    if (criticismDepth < 5) reasons.push(`Criticism Depth score ${criticismDepth} is below the threshold of 5.`);
-    if (factualAccuracy < 5) reasons.push(`Factual Accuracy score ${factualAccuracy} is below the threshold of 5.`);
+    if (criticismDepth < 5) {
+      reasons.push(`Criticism Depth score ${criticismDepth} is below the threshold of 5.`);
+      if (explanations.length > 0) reasons.push(...explanations);
+    }
+    if (factualAccuracy < 5) {
+      reasons.push(`Factual Accuracy score ${factualAccuracy} is below the threshold of 5.`);
+      if (explanations.length > 0) reasons.push(...explanations);
+    }
     if (constructiveness < 5) reasons.push(`Constructiveness score ${constructiveness} is below the threshold of 5.`);
     if (scoreCalibration < 5) reasons.push(`Score Calibration score ${scoreCalibration} is below the threshold of 5.`);
 

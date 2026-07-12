@@ -157,7 +157,7 @@ export default function UploadZone() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
-            className="mt-5"
+            className="mt-6"
           >
             <motion.button
               onClick={onSubmit}

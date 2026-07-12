@@ -5,12 +5,15 @@ import "./globals.css";
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
+  display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 const instrumentSerif = Instrument_Serif({
@@ -18,6 +21,7 @@ const instrumentSerif = Instrument_Serif({
   variable: "--font-display",
   weight: "400",
   style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
